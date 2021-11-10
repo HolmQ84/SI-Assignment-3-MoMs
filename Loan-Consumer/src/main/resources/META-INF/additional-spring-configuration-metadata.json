@@ -1,0 +1,15 @@
+{
+  "properties": [
+    {
+      "name": "spring.application.bankName",
+      "type": "java.lang.String",
+      "description": "Description for spring.application.bankName.",
+      "defaultValue": "Danske Bank"
+    },
+    {
+      "name": "spring.application.bankId",
+      "type": "java.lang.String",
+      "description": "Description for spring.application.bankId.",
+      "defaultValue": "9%zM09LpUi%JjNmvjQEy"
+    }
+  ] }
