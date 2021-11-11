@@ -28,7 +28,7 @@ public class LoanController {
 
     @PostMapping(value = "/acceptLoan/{loanId}")
     public String acceptLoan(@PathVariable int loanId) {
-        // Send accept of a specific loan with ID.
-        return null;
+        loanService.sendLoanAcceptance(loanId);
+        return "Loan acceptance sent for loan offer with ID: " + loanId;
     }
 }

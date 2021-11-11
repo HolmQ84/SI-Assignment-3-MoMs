@@ -4,10 +4,8 @@ package si.assignment3.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
 public class LoanOffer {
-    @Id
-    private int id;
+    private int loanId;
     private String customerId;
     private String bankId;
     private String bankName;
@@ -17,7 +15,8 @@ public class LoanOffer {
     private double loanInterest;
     private int paybackMonths;
 
-    public LoanOffer(String customerId, String bankId, String bankName, String customerName, String customerTitle, int loanAmount, double loanInterest, int paybackMonths) {
+    public LoanOffer(int loanId, String customerId, String bankId, String bankName, String customerName, String customerTitle, int loanAmount, double loanInterest, int paybackMonths) {
+        this.loanId = loanId;
         this.customerId = customerId;
         this.bankId = bankId;
         this.bankName = bankName;
@@ -29,6 +28,14 @@ public class LoanOffer {
     }
 
     public LoanOffer() {
+    }
+
+    public int getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(int loanId) {
+        this.loanId = loanId;
     }
 
     public String getCustomerId() {
@@ -93,19 +100,5 @@ public class LoanOffer {
 
     public void setPaybackMonths(int paybackMonths) {
         this.paybackMonths = paybackMonths;
-    }
-
-    @Override
-    public String toString() {
-        return "LoanOffer{" +
-                "customerId='" + customerId + '\'' +
-                ", bankId='" + bankId + '\'' +
-                ", bankName='" + bankName + '\'' +
-                ", customerName='" + customerName + '\'' +
-                ", customerTitle='" + customerTitle + '\'' +
-                ", loanAmount=" + loanAmount +
-                ", loanInterest=" + loanInterest +
-                ", paybackMonths=" + paybackMonths +
-                '}';
     }
 }

@@ -1,6 +1,7 @@
 package si.assignment3.model;
 
 public class LoanOffer {
+    private String loanId;
     private String customerId;
     private String bankId;
     private String bankName;
@@ -10,7 +11,8 @@ public class LoanOffer {
     private double loanInterest;
     private int paybackMonths;
 
-    public LoanOffer(String customerId, String bankId, String bankName, String customerName, String customerTitle, int loanAmount, double loanInterest, int paybackMonths) {
+    public LoanOffer(String loanId, String customerId, String bankId, String bankName, String customerName, String customerTitle, int loanAmount, double loanInterest, int paybackMonths) {
+        this.loanId = loanId;
         this.customerId = customerId;
         this.bankId = bankId;
         this.bankName = bankName;
@@ -22,6 +24,14 @@ public class LoanOffer {
     }
 
     public LoanOffer() {
+    }
+
+    public String getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(String loanId) {
+        this.loanId = loanId;
     }
 
     public String getCustomerId() {

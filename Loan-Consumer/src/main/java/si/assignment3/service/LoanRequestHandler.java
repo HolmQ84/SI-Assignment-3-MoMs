@@ -23,7 +23,7 @@ public class LoanRequestHandler {
     @Autowired
     SendLoanHandler sendLoanHandler = new SendLoanHandler();
 
-    @KafkaListener(topics = "loan-request", groupId = "my-group2")
+    @KafkaListener(topics = "loan-request", groupId = "request")
     public void listen(String message) {
         try {
             // Convert message to LoanRequest object.
@@ -39,7 +39,22 @@ public class LoanRequestHandler {
         }
     }
 
-    public List<LoanOffer> getOffers() {
-        return offers;
+    @KafkaListener(topics = "loan-acceptance", groupId = "accept")
+    public void listen2(String message) {
+        logger.info("Loan acceptance received! " + message);
+        LoanOffer loanOffer = getOfferById(Integer.parseInt(message.substring(10,18)));
+
+        // TODO - Use found Loan Offer (var loanOffer line 45) to send data via
+        //  RabbitMQ to external project to create Contract.
+
+    }
+
+    public LoanOffer getOfferById(int loanId) {
+        for (LoanOffer current: offers) {
+            if (current.getLoanId() == loanId) {
+                return current;
+            }
+        }
+        return null;
     }
 }

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import si.assignment3.model.LoanOffer;
 import si.assignment3.model.LoanRequest;
 
+import java.util.Random;
+
 @Service
 public class LoanCalculater {
 
@@ -13,8 +15,12 @@ public class LoanCalculater {
     @Value("${spring.application.bankName}")
     private String bankName;
 
+    Random random = new Random();
+
     public LoanOffer calculateLoan(LoanRequest loanRequest) {
         LoanOffer loanOffer = new LoanOffer();
+
+        loanOffer.setLoanId(random.nextInt(89999998)+10000001);
 
         // Put in data from Request along with Bank Info.
         loanOffer.setCustomerId(loanRequest.getCustomerId());

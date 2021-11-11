@@ -16,7 +16,8 @@ import java.util.*;
 @Service
 public class LoanService {
 
-    private final String topic = "loan-request";
+    private final String requestTopic = "loan-request";
+    private final String acceptTopic = "loan-acceptance";
     private final Logger logger = LoggerFactory.getLogger(LoanService.class);
     private final List<LoanOffer> offers = new ArrayList<>();
 
@@ -35,7 +36,7 @@ public class LoanService {
             request.put("debtAmount", loanRequest.getDebtAmount());
             request.put("carOwner", loanRequest.isCarOwner());
             request.put("houseOwner", loanRequest.isHouseOwner());
-            template.send(topic, request.toString());
+            template.send(requestTopic, request.toString());
             logger.info("Sent Loan Request to Kafka - " + request.toString());
             template.flush();
         } catch (Exception e) {
@@ -53,5 +54,17 @@ public class LoanService {
 
     public List<LoanOffer> getOffers() {
         return offers;
+    }
+
+    public void sendLoanAcceptance(int loanId) {
+        try {
+            JSONObject request = new JSONObject();
+            request.put("loanId", loanId);
+            request.put("status", "accept");
+            template.send(acceptTopic, request.toString());
+            logger.info("Sent acceptance for loan offer with ID: " +loanId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -26,6 +26,7 @@ public class SendLoanHandler {
     public String convertOfferToString(LoanOffer loanOffer) {
         try {
             JSONObject offer = new JSONObject();
+            offer.put("loanId", loanOffer.getLoanId());
             offer.put("customerId", loanOffer.getCustomerId());
             offer.put("customerName", loanOffer.getCustomerName());
             offer.put("customerTitle", loanOffer.getCustomerTitle());
