@@ -46,7 +46,7 @@ public class LoanService {
     @KafkaListener(topics = "loan-offer", groupId = "my-group")
     public LoanOffer listen(String message) {
         LoanOffer loanOffer = new Gson().fromJson(message, LoanOffer.class);
-        System.out.println("Received loan offer.");
+        logger.info("Received loan offer.");
         offers.add(loanOffer);
         return loanOffer;
     }
