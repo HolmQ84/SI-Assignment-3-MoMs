@@ -1,33 +1,27 @@
-package si.assignment3.model;
+package si.contract.model;
 
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-public class LoanOffer {
+public class ContractInfo {
     private int loanId;
     private String customerId;
-    private String bankId;
-    private String bankName;
     private String customerName;
     private String customerTitle;
+    private String bankName;
     private int loanAmount;
     private double loanInterest;
     private int paybackMonths;
 
-    public LoanOffer(int loanId, String customerId, String bankId, String bankName, String customerName, String customerTitle, int loanAmount, double loanInterest, int paybackMonths) {
+    public ContractInfo() {
+    }
+
+    public ContractInfo(int loanId, String customerId, String customerName, String customerTitle, String bankName, int loanAmount, double loanInterest, int paybackMonths) {
         this.loanId = loanId;
         this.customerId = customerId;
-        this.bankId = bankId;
-        this.bankName = bankName;
         this.customerName = customerName;
         this.customerTitle = customerTitle;
+        this.bankName = bankName;
         this.loanAmount = loanAmount;
         this.loanInterest = loanInterest;
         this.paybackMonths = paybackMonths;
-    }
-
-    public LoanOffer() {
     }
 
     public int getLoanId() {
@@ -46,22 +40,6 @@ public class LoanOffer {
         this.customerId = customerId;
     }
 
-    public String getBankId() {
-        return bankId;
-    }
-
-    public void setBankId(String bankId) {
-        this.bankId = bankId;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
     public String getCustomerName() {
         return customerName;
     }
@@ -76,6 +54,14 @@ public class LoanOffer {
 
     public void setCustomerTitle(String customerTitle) {
         this.customerTitle = customerTitle;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
     public int getLoanAmount() {
@@ -104,13 +90,12 @@ public class LoanOffer {
 
     @Override
     public String toString() {
-        return "{" +
+        return "ContractInfo{" +
                 "loanId=" + loanId +
                 ", customerId='" + customerId + '\'' +
-                ", bankId='" + bankId + '\'' +
-                ", bankName='" + bankName + '\'' +
                 ", customerName='" + customerName + '\'' +
                 ", customerTitle='" + customerTitle + '\'' +
+                ", bankName='" + bankName + '\'' +
                 ", loanAmount=" + loanAmount +
                 ", loanInterest=" + loanInterest +
                 ", paybackMonths=" + paybackMonths +

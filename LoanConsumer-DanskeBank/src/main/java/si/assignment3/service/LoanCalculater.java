@@ -26,8 +26,8 @@ public class LoanCalculater {
         loanOffer.setCustomerId(loanRequest.getCustomerId());
         loanOffer.setCustomerName(loanRequest.getCustomerName());
         loanOffer.setCustomerTitle(loanRequest.getCustomerTitle());
-        loanOffer.setBankId("Danske Bank");
-        loanOffer.setBankName("9%zM09LpUi%JjNmvjQEy");
+        loanOffer.setBankName("Danske Bank");
+        loanOffer.setBankId("9%zM09LpUi%JjNmvjQEy");
 
         // Calculate Loan Amount
         int total = 0;
