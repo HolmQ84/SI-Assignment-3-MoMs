@@ -101,4 +101,19 @@ public class LoanOffer {
     public void setPaybackMonths(int paybackMonths) {
         this.paybackMonths = paybackMonths;
     }
+
+    @Override
+    public String toString() {
+        return "LoanOffer{" +
+                "loanId=" + loanId +
+                ", customerId='" + customerId + '\'' +
+                ", bankId='" + bankId + '\'' +
+                ", bankName='" + bankName + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", customerTitle='" + customerTitle + '\'' +
+                ", loanAmount=" + loanAmount +
+                ", loanInterest=" + loanInterest +
+                ", paybackMonths=" + paybackMonths +
+                '}';
+    }
 }

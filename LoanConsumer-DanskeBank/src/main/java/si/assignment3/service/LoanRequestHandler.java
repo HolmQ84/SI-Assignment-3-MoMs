@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 import si.assignment3.model.LoanOffer;
 import si.assignment3.model.LoanRequest;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import org.springframework.boot.SpringApplication;
+
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,10 +49,22 @@ public class LoanRequestHandler {
     public void listen2(String message) {
         logger.info("Loan acceptance received! " + message);
         LoanOffer loanOffer = getOfferById(Integer.parseInt(message.substring(10,18)));
-
-        // TODO - Use found Loan Offer (var loanOffer line 45) to send data via
-        //  RabbitMQ to external project to create Contract.
-
+        if (loanOffer != null) {
+            System.out.println("Loan found in DB!");
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.setHost("localhost");
+            String queueName = "contract";
+            try {
+                Connection connection = factory.newConnection();
+                Channel channel = connection.createChannel();
+                channel.queueDeclare(queueName, false, false, false, null);
+                channel.basicPublish("", queueName, null, loanOffer.toString().getBytes(StandardCharsets.UTF_8));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Loan not found in DB.");
+        }
     }
 
     public LoanOffer getOfferById(int loanId) {
