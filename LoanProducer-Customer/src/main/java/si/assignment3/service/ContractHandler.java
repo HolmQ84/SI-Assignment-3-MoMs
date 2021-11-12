@@ -1,21 +1,22 @@
 package si.assignment3.service;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.google.gson.Gson;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
+
+import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 
 @Service
 public class ContractHandler {
-    private final static Logger logger = LoggerFactory.getLogger(ContractHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(ContractHandler.class);
 
     public static void connectQueue()
     {
@@ -34,8 +35,16 @@ public class ContractHandler {
             {
                 String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
                 logger.info("Received new contract: " + message);
-                Document document = new Gson().fromJson(message, Document.class);
-                System.out.println(document);
+                System.out.println("Converting from byte Array to PDF...");
+                Document document = new Document();
+                document.open();
+                try {
+                    PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream("test.pdf"));
+                    document.add(new Chunk("Hejsa"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                document.close();
             };
             channel.basicConsume("contract-delivery", true, deliverCallback, consumerTag -> {});
         } catch (Exception e) {

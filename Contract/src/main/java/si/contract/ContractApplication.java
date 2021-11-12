@@ -1,8 +1,9 @@
 package si.contract;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.Gson;
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -14,13 +15,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import si.contract.model.ContractInfo;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 @SpringBootApplication
 public class ContractApplication {
@@ -74,29 +73,51 @@ public class ContractApplication {
             String dir = System.getProperty("user.dir");
             PdfWriter.getInstance(document, new FileOutputStream(dir+"/Contract/src/main/resources/static/contracts/Contract-"+contractInfo.getLoanId()+".pdf"));
             document.open();
-            Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+            Font font = FontFactory.getFont(FontFactory.HELVETICA, 16, BaseColor.BLACK);
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Chunk chunk = new Chunk(sdf.format(cal.getTime()), font);
-            document.add(chunk);
-            chunk = new Chunk("Dear " + contractInfo.getCustomerTitle() + " " + contractInfo.getCustomerName(), font);
-            document.add(chunk);
-            chunk = new Chunk("We hereby send confirmation of your accepted loan.\nYou can see the details of the loans here:", font);
-            document.add(chunk);
-            chunk = new Chunk("Loan Amount: " + contractInfo.getLoanAmount(), font);
-            document.add(chunk);
-            chunk = new Chunk("Loan Interest: " + contractInfo.getLoanInterest(), font);
-            document.add(chunk);
-            chunk = new Chunk("Payback Months: " + contractInfo.getPaybackMonths(), font);
-            document.add(chunk);
-            chunk = new Chunk("Amount to pay each month: " + (contractInfo.getLoanAmount() / contractInfo.getPaybackMonths()), font);
-            document.add(chunk);
-            chunk = new Chunk("We look forward to earning money on you! :)", font);
-            document.add(chunk);
-            chunk = new Chunk("Kind Regards", font);
-            document.add(chunk);
-            chunk = new Chunk(contractInfo.getBankName(), font);
-            document.add(chunk);
+            Paragraph paragraph = new Paragraph(sdf.format(cal.getTime()), font);
+            document.add(paragraph);
+            document.add(new Paragraph("\n\nDear " + contractInfo.getCustomerTitle() + " " + contractInfo.getCustomerName(), font));
+            document.add(new Paragraph("\nWe hereby send confirmation of your accepted loan.\n\nYou can see the details of the loan here:\n ", font));
+            PdfPTable table = new PdfPTable(2);
+
+            PdfPCell cellOne = new PdfPCell(new Phrase("Loan Amount", font));
+            PdfPCell cellTwo = new PdfPCell(new Phrase(String.valueOf(contractInfo.getLoanAmount()) + " kr.", font));
+            PdfPCell cellThree = new PdfPCell(new Phrase("Loan Interest", font));
+            PdfPCell cellFour = new PdfPCell(new Phrase(String.valueOf(contractInfo.getLoanInterest()) + " %", font));
+            PdfPCell cellFive = new PdfPCell(new Phrase("Payback Months", font));
+            PdfPCell cellSix = new PdfPCell(new Phrase(String.valueOf(contractInfo.getPaybackMonths()) + " kr.", font));
+            PdfPCell cellSeven = new PdfPCell(new Phrase("Monthly payment", font));
+            PdfPCell cellEight = new PdfPCell(new Phrase(String.valueOf(Math.round(contractInfo.getLoanAmount() / contractInfo.getPaybackMonths())) + " kr.", font));
+
+            cellOne.setBorder(Rectangle.NO_BORDER);
+            cellTwo.setBorder(Rectangle.NO_BORDER);
+            cellThree.setBorder(Rectangle.NO_BORDER);
+            cellFour.setBorder(Rectangle.NO_BORDER);
+            cellFive.setBorder(Rectangle.NO_BORDER);
+            cellSix.setBorder(Rectangle.NO_BORDER);
+            cellSeven.setBorder(Rectangle.NO_BORDER);
+            cellEight.setBorder(Rectangle.NO_BORDER);
+
+            table.addCell(cellOne);
+            table.addCell(cellTwo);
+            table.addCell(cellThree);
+            table.addCell(cellFour);
+            table.addCell(cellFive);
+            table.addCell(cellSix);
+            table.addCell(cellSeven);
+            table.addCell(cellEight);
+
+            document.add(table);
+            document.add(new Paragraph("\nWe look forward to earning money on you - while doing nothing! :)", font));
+            document.add(new Paragraph("\nKind Regards", font));
+            document.add(new Paragraph(contractInfo.getBankName(), font));
+            if (contractInfo.getBankName().equals("Danske Bank")) {
+                Image image = Image.getInstance("https://vidensby.dk/wp-content/uploads/2018/01/danske-bank-logo-photos.png");
+                image.scaleAbsolute(100, 20);
+                document.add(image);
+            }
             document.close();
         } catch (Exception e) {
             e.printStackTrace();

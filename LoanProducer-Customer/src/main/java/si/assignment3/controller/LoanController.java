@@ -17,7 +17,7 @@ public class LoanController {
     private LoanService loanService;
 
     @Autowired
-    private ContractHandler contractHandler;
+    ContractHandler contractHandler;
 
     @PostMapping(value = "/loanrequest")
     public String loanRequest(@RequestBody LoanRequest loanRequest) {
@@ -27,13 +27,11 @@ public class LoanController {
 
     @GetMapping(value = "/loanOffers")
     public List<LoanOffer> loanOffers() {
-        contractHandler.connectQueue();
         return loanService.getOffers();
     }
 
     @PostMapping(value = "/acceptLoan/{loanId}")
     public String acceptLoan(@PathVariable int loanId) {
-        contractHandler.connectQueue();
         loanService.sendLoanAcceptance(loanId);
         return "Loan acceptance sent for loan offer with ID: " + loanId;
     }
