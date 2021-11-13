@@ -15,9 +15,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import si.contract.model.ContractInfo;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -54,8 +56,8 @@ public class ContractApplication {
                 logger.info("Received new contract data: " + message);
                 ContractInfo contractInfo = new Gson().fromJson(message, ContractInfo.class);
                 try {
-                    Document document = createContract(contractInfo);
-                    sendContract(document);
+                    createContract(contractInfo);
+                    sendContract(contractInfo.getLoanId());
                     logger.info("Contract sent back to RabbitMQ with topic 'contract-delivery'");
                 } catch (DocumentException e) {
                     e.printStackTrace();
@@ -67,7 +69,24 @@ public class ContractApplication {
         }
     }
 
-    public static Document createContract(ContractInfo contractInfo) throws FileNotFoundException, DocumentException {
+    public static void sendContract(int id) throws IOException {
+        String dir = System.getProperty("user.dir");
+        File file = new File(dir+"/Contract/src/main/resources/static/contracts/Contract-"+id+".pdf");
+        byte[] byteDocument = Files.readAllBytes(file.toPath());
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("localhost");
+        String queueName = "contract-delivery";
+        try {
+            Connection connection = factory.newConnection();
+            Channel channel = connection.createChannel();
+            channel.queueDeclare(queueName, false, false, false, null);
+            channel.basicPublish("", queueName, null, byteDocument);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void createContract(ContractInfo contractInfo) throws DocumentException {
         Document document = new Document();
         try {
             String dir = System.getProperty("user.dir");
@@ -87,7 +106,7 @@ public class ContractApplication {
             PdfPCell cellThree = new PdfPCell(new Phrase("Loan Interest", font));
             PdfPCell cellFour = new PdfPCell(new Phrase(String.valueOf(contractInfo.getLoanInterest()) + " %", font));
             PdfPCell cellFive = new PdfPCell(new Phrase("Payback Months", font));
-            PdfPCell cellSix = new PdfPCell(new Phrase(String.valueOf(contractInfo.getPaybackMonths()) + " kr.", font));
+            PdfPCell cellSix = new PdfPCell(new Phrase(String.valueOf(contractInfo.getPaybackMonths()) + " mdr.", font));
             PdfPCell cellSeven = new PdfPCell(new Phrase("Monthly payment", font));
             PdfPCell cellEight = new PdfPCell(new Phrase(String.valueOf(Math.round(contractInfo.getLoanAmount() / contractInfo.getPaybackMonths())) + " kr.", font));
 
@@ -113,27 +132,27 @@ public class ContractApplication {
             document.add(new Paragraph("\nWe look forward to earning money on you - while doing nothing! :)", font));
             document.add(new Paragraph("\nKind Regards", font));
             document.add(new Paragraph(contractInfo.getBankName(), font));
-            if (contractInfo.getBankName().equals("Danske Bank")) {
-                Image image = Image.getInstance("https://vidensby.dk/wp-content/uploads/2018/01/danske-bank-logo-photos.png");
-                image.scaleAbsolute(100, 20);
-                document.add(image);
+            switch (contractInfo.getBankName()) {
+                case "Danske Bank": {
+                    Image image = Image.getInstance("https://vidensby.dk/wp-content/uploads/2018/01/danske-bank-logo-photos.png");
+                    image.scaleAbsolute(100, 20);
+                    document.add(image);
+                    break;
+                }
+                case "Nordea": {
+                    Image image = Image.getInstance("https://sifa.dk/wp-content/uploads/2016/06/Nordea-logo.png");
+                    image.scaleAbsolute(100, 20);
+                    document.add(image);
+                    break;
+                }
+                case "Nykredit": {
+                    Image image = Image.getInstance("https://www.viborggolfklub.dk/wp-content/uploads/2017/08/nykredit.jpg");
+                    image.scaleAbsolute(100, 20);
+                    document.add(image);
+                    break;
+                }
             }
             document.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return document;
-    }
-
-    public static void sendContract(Document document) {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
-        String queueName = "contract-delivery";
-        try {
-            Connection connection = factory.newConnection();
-            Channel channel = connection.createChannel();
-            channel.queueDeclare(queueName, false, false, false, null);
-            channel.basicPublish("", queueName, null, document.toString().getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             e.printStackTrace();
         }

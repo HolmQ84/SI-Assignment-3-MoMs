@@ -1,22 +1,20 @@
 package si.assignment3.service;
 
-import com.itextpdf.text.*;
-import com.google.gson.Gson;
-import com.itextpdf.text.pdf.PdfWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-import java.io.FileOutputStream;
-import java.nio.charset.StandardCharsets;
+import java.io.*;
 
 @Service
 public class ContractHandler {
     private static final Logger logger = LoggerFactory.getLogger(ContractHandler.class);
+    static byte[] aByte = new byte[1];
+    static int bytesRead;
 
     public static void connectQueue()
     {
@@ -33,18 +31,34 @@ public class ContractHandler {
             // Get notified, if a message for this receiver arrives
             DeliverCallback deliverCallback = (consumerTag, delivery) ->
             {
-                String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-                logger.info("Received new contract: " + message);
+                byte[] message = delivery.getBody();
+                logger.info("Received new contract!");
                 System.out.println("Converting from byte Array to PDF...");
-                Document document = new Document();
-                document.open();
+
+                InputStream is = new ByteArrayInputStream(message);
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                FileOutputStream fos;
+                BufferedOutputStream bos;
                 try {
-                    PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream("test.pdf"));
-                    document.add(new Chunk("Hejsa"));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    LoanService ls = new LoanService();
+                    String dir = System.getProperty("user.dir");
+                    fos = new FileOutputStream(dir+"/LoanProducer-Customer/src/main/resources/static/contracts/Contract-"+ls.getLoanId()+".pdf");
+                    bos = new BufferedOutputStream(fos);
+                    bytesRead = is.read(aByte, 0, aByte.length);
+
+                    do {
+                        baos.write(aByte);
+                        bytesRead = is.read(aByte);
+                    } while (bytesRead != -1);
+
+                    bos.write(baos.toByteArray());
+                    bos.flush();
+                    bos.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
-                document.close();
+                System.out.println("Succesfully converted byte array to PDF!");
             };
             channel.basicConsume("contract-delivery", true, deliverCallback, consumerTag -> {});
         } catch (Exception e) {

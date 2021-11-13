@@ -20,6 +20,7 @@ public class LoanService {
     private final String acceptTopic = "loan-acceptance";
     private final Logger logger = LoggerFactory.getLogger(LoanService.class);
     private final List<LoanOffer> offers = new ArrayList<>();
+    private int loanId;
 
     @Autowired
     KafkaTemplate<String, String> template;
@@ -57,6 +58,7 @@ public class LoanService {
     }
 
     public void sendLoanAcceptance(int loanId) {
+        this.loanId = loanId;
         try {
             JSONObject request = new JSONObject();
             request.put("loanId", loanId);
@@ -66,5 +68,9 @@ public class LoanService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public int getLoanId() {
+        return loanId;
     }
 }

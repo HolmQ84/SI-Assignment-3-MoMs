@@ -35,4 +35,10 @@ public class LoanController {
         loanService.sendLoanAcceptance(loanId);
         return "Loan acceptance sent for loan offer with ID: " + loanId;
     }
+
+    @GetMapping(value = "/getContract")
+    public String getContract() {
+        // TODO - Write code.
+        return "";
+    }
 }

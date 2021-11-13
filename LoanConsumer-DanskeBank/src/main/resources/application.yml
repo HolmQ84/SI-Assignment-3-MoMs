@@ -3,8 +3,6 @@ server:
 spring:
   application:
     name: Kafka-Consumer-1
-    bankName: Danske Bank
-    bankId: 9%zM09LpUi%JjNmvjQEy
   kafka:
     producer:
       bootstrap-servers: localhost:9092

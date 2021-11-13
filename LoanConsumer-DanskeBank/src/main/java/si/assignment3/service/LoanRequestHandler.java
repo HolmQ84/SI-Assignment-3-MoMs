@@ -1,6 +1,9 @@
 package si.assignment3.service;
 
 import com.google.gson.Gson;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +11,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import si.assignment3.model.LoanOffer;
 import si.assignment3.model.LoanRequest;
-
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import org.springframework.boot.SpringApplication;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;

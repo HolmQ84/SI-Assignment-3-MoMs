@@ -9,12 +9,6 @@ import java.util.Random;
 
 @Service
 public class LoanCalculater {
-
-    @Value("${spring.application.bankId}")
-    private String bankId;
-    @Value("${spring.application.bankName}")
-    private String bankName;
-
     Random random = new Random();
 
     public LoanOffer calculateLoan(LoanRequest loanRequest) {
@@ -26,8 +20,10 @@ public class LoanCalculater {
         loanOffer.setCustomerId(loanRequest.getCustomerId());
         loanOffer.setCustomerName(loanRequest.getCustomerName());
         loanOffer.setCustomerTitle(loanRequest.getCustomerTitle());
-        loanOffer.setBankName("Danske Bank");
-        loanOffer.setBankId("9%zM09LpUi%JjNmvjQEy");
+        loanOffer.setBankName("Danske Bank");       // TODO - Change name in new project.
+        loanOffer.setBankId("9%zM09LpUi%JjNmvjQEy");        // TODO - Change.
+
+            // TODO - Change variables on different projects.
 
         // Calculate Loan Amount
         int total = 0;
