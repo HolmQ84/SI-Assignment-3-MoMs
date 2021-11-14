@@ -2,7 +2,7 @@ server:
   port: 8082
 spring:
   application:
-    name: Kafka-Consumer-1
+    name: Kafka-Consumer-4
   kafka:
     producer:
       bootstrap-servers: localhost:9092
@@ -10,3 +10,4 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
     consumer:
       group-id: Danske Bank
+

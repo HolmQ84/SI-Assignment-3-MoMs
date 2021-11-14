@@ -9,13 +9,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Loan-Consumer(Nordea)" />
         <module name="Loan-Consumer(Nykredit)" />
+        <module name="Loan-Consumer(NyKredit)" />
         <module name="Contract" />
-        <module name="Loan-Consumer(DanskeBank)" />
         <module name="Loan-Consumer" />
         <module name="Loan-Producer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Loan-Consumer(DanskeBank)" target="11" />
       <module name="Loan-Consumer(Nykredit)" target="11" />
       <module name="LoanConsumer-DanskeBank" target="11" />
       <module name="LoanProducer-Customer" target="11" />
@@ -27,6 +28,7 @@
       <module name="Loan-Consumer" options="-parameters" />
       <module name="Loan-Consumer(DanskeBank)" options="-parameters" />
       <module name="Loan-Consumer(Nordea)" options="-parameters" />
+      <module name="Loan-Consumer(NyKredit)" options="-parameters" />
       <module name="Loan-Consumer(Nykredit)" options="-parameters" />
       <module name="Loan-Producer" options="-parameters" />
       <module name="LoanConsumer-DanskeBank" options="-parameters" />

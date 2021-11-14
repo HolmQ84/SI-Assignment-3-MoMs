@@ -20,33 +20,33 @@ public class LoanCalculater {
         loanOffer.setCustomerName(loanRequest.getCustomerName());
         loanOffer.setCustomerTitle(loanRequest.getCustomerTitle());
         loanOffer.setBankName("Danske Bank");
-        loanOffer.setBankId("9%zM09LpUi%JjNmvjQEy");
+        loanOffer.setBankId("83jso1LpUi%JjNmvjQEy");
 
         // Calculate Loan Amount
         int total = 0;
         total += (loanRequest.getYearlySalary()*5)-(loanRequest.getDebtAmount()*2);
         if (loanRequest.isCarOwner()) {
-            total = (int) (total*0.8);
+            total = (int) (total*0.7);
         }
         if (loanRequest.isHouseOwner()) {
-            total = (int) (total*3);
+            total = (int) (total*2.8);
         }
         loanOffer.setLoanAmount(total);
 
         // Calculate Loan Interest
-        double interest = total / 1000000.0;
+        double interest = total / 955000.0;
         if (loanRequest.isCarOwner()) {
-            interest += 1.0;
+            interest += 1.3;
         }
         if (loanRequest.isHouseOwner()) {
-            interest -= 0.5;
+            interest -= 0.6;
         }
         double roundOffInterest = Math.round(interest * 100.0) / 100.0;
         loanOffer.setLoanInterest(roundOffInterest);
 
         // Calculate payback months
         loanOffer.setPaybackMonths(
-            (int) (total * interest) / 10000
+            (int) (total * interest) / 9700
         );
 
         return loanOffer;

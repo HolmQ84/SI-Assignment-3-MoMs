@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>si</groupId>
-    <artifactId>Loan-Consumer</artifactId>
+    <artifactId>Loan-Consumer-Nykredit</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Loan-Consumer</name>
-    <description>Loan-Consumer</description>
+    <name>Loan-Consumer-Nykredit</name>
+    <description>Loan-Consumer-Nykredit</description>
     <properties>
         <java.version>11</java.version>
     </properties>
