@@ -23,6 +23,7 @@ public class LoanOffer {
         this.paybackMonths = paybackMonths;
     }
 
+
     public LoanOffer() {
     }
 
