@@ -1,0 +1,13 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: NordeaConsumerApplication
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: Nordea
+
