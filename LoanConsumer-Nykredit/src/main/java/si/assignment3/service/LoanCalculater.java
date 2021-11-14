@@ -1,6 +1,5 @@
 package si.assignment3.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import si.assignment3.model.LoanOffer;
 import si.assignment3.model.LoanRequest;
@@ -21,25 +20,23 @@ public class LoanCalculater {
         loanOffer.setCustomerName(loanRequest.getCustomerName());
         loanOffer.setCustomerTitle(loanRequest.getCustomerTitle());
         loanOffer.setBankName("Nykredit");
-        loanOffer.setBankId("!=~G]<@qWf^2T;v1xMX-");
-
-            // TODO - Change variables on different projects.
+        loanOffer.setBankId("9%zM09LpUi%JjNmvjQEy");
 
         // Calculate Loan Amount
         int total = 0;
-        total += (loanRequest.getYearlySalary()*3)-(loanRequest.getDebtAmount()*2);
+        total += (loanRequest.getYearlySalary()*4)-(loanRequest.getDebtAmount());
         if (loanRequest.isCarOwner()) {
-            total = (int) (total*0.9);
+            total = (int) (total*0.7);
         }
         if (loanRequest.isHouseOwner()) {
-            total = (int) (total*3.5);
+            total = (int) (total*2.5);
         }
         loanOffer.setLoanAmount(total);
 
         // Calculate Loan Interest
-        double interest = total / 1000000.0;
+        double interest = total / 1050000.0;
         if (loanRequest.isCarOwner()) {
-            interest += 1.1;
+            interest += 1.2;
         }
         if (loanRequest.isHouseOwner()) {
             interest -= 0.9;
@@ -49,7 +46,7 @@ public class LoanCalculater {
 
         // Calculate payback months
         loanOffer.setPaybackMonths(
-            (int) (total * interest) / 10000
+            (int) (total * interest) / 10090
         );
 
         return loanOffer;

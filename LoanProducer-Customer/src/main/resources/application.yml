@@ -1,5 +1,5 @@
 server:
-  port: 8081    # TODO - Change port.
+  port: 8081
 spring:
   kafka:
     producer:

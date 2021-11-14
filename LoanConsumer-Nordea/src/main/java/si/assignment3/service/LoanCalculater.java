@@ -1,6 +1,5 @@
 package si.assignment3.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import si.assignment3.model.LoanOffer;
 import si.assignment3.model.LoanRequest;
@@ -21,14 +20,13 @@ public class LoanCalculater {
         loanOffer.setCustomerName(loanRequest.getCustomerName());
         loanOffer.setCustomerTitle(loanRequest.getCustomerTitle());
         loanOffer.setBankName("Nordea");
-        loanOffer.setBankId("-VR`Xs!n4]Ca.R0n%9JS");
-
+        loanOffer.setBankId("9ke509LpUi%JjNmvjQEy");
 
         // Calculate Loan Amount
         int total = 0;
-        total += (loanRequest.getYearlySalary()*4)-(loanRequest.getDebtAmount()*1.5);
+        total += (loanRequest.getYearlySalary()*5)-(loanRequest.getDebtAmount()*2);
         if (loanRequest.isCarOwner()) {
-            total = (int) (total*0.7);
+            total = (int) (total*0.9);
         }
         if (loanRequest.isHouseOwner()) {
             total = (int) (total*2.5);
@@ -36,19 +34,19 @@ public class LoanCalculater {
         loanOffer.setLoanAmount(total);
 
         // Calculate Loan Interest
-        double interest = total / 1000000.0;
+        double interest = total / 900000.0;
         if (loanRequest.isCarOwner()) {
-            interest += 1.3;
+            interest += 1.2;
         }
         if (loanRequest.isHouseOwner()) {
-            interest -= 0.3;
+            interest -= 0.7;
         }
         double roundOffInterest = Math.round(interest * 100.0) / 100.0;
         loanOffer.setLoanInterest(roundOffInterest);
 
         // Calculate payback months
         loanOffer.setPaybackMonths(
-            (int) (total * interest) / 10000
+            (int) (total * interest) / 9500
         );
 
         return loanOffer;

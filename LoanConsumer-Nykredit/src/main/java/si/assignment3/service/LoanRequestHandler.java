@@ -27,7 +27,7 @@ public class LoanRequestHandler {
     @Autowired
     SendLoanHandler sendLoanHandler = new SendLoanHandler();
 
-    @KafkaListener(topics = "loan-request", groupId = "request")
+    @KafkaListener(topics = "loan-request", groupId = "request-nykredit")
     public void listen(String message) {
         try {
             // Convert message to LoanRequest object.
@@ -43,7 +43,7 @@ public class LoanRequestHandler {
         }
     }
 
-    @KafkaListener(topics = "loan-acceptance", groupId = "accept")
+    @KafkaListener(topics = "loan-acceptance", groupId = "accept-nykredit")
     public void listen2(String message) {
         logger.info("Loan acceptance received! " + message);
         LoanOffer loanOffer = getOfferById(Integer.parseInt(message.substring(10,18)));

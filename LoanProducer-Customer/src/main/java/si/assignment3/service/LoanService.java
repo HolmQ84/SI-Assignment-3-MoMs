@@ -59,6 +59,7 @@ public class LoanService {
 
     public void sendLoanAcceptance(int loanId) {
         this.loanId = loanId;
+        System.out.println("LoanID: " +loanId);
         try {
             JSONObject request = new JSONObject();
             request.put("loanId", loanId);

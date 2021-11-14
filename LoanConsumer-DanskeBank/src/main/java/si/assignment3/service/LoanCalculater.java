@@ -1,6 +1,5 @@
 package si.assignment3.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import si.assignment3.model.LoanOffer;
 import si.assignment3.model.LoanRequest;
@@ -20,10 +19,8 @@ public class LoanCalculater {
         loanOffer.setCustomerId(loanRequest.getCustomerId());
         loanOffer.setCustomerName(loanRequest.getCustomerName());
         loanOffer.setCustomerTitle(loanRequest.getCustomerTitle());
-        loanOffer.setBankName("Danske Bank");       // TODO - Change name in new project.
-        loanOffer.setBankId("9%zM09LpUi%JjNmvjQEy");        // TODO - Change.
-
-            // TODO - Change variables on different projects.
+        loanOffer.setBankName("Danske Bank");
+        loanOffer.setBankId("9%zM09LpUi%JjNmvjQEy");
 
         // Calculate Loan Amount
         int total = 0;

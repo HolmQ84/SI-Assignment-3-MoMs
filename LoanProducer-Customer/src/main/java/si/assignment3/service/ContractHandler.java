@@ -40,6 +40,7 @@ public class ContractHandler {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 FileOutputStream fos;
                 BufferedOutputStream bos;
+
                 try {
                     LoanService ls = new LoanService();
                     String dir = System.getProperty("user.dir");

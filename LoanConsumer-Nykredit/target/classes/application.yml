@@ -1,10 +1,12 @@
 server:
-  port: 8082
+  port: 8084
 spring:
   application:
-    name: Kafka-Consumer-1
+    name: Kafka-Consumer-3
   kafka:
     producer:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: NyKredit

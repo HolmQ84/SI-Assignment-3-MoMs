@@ -11,6 +11,8 @@
         <option value="$PROJECT_DIR$/Contract/pom.xml" />
         <option value="$PROJECT_DIR$/LoanConsumer-DanskeBank/pom.xml" />
         <option value="$PROJECT_DIR$/LoanProducer-Customer/pom.xml" />
+        <option value="$PROJECT_DIR$/LoanConsumer-Nordea/pom.xml" />
+        <option value="$PROJECT_DIR$/LoanConsumer-Nykredit/pom.xml" />
       </list>
     </option>
   </component>
