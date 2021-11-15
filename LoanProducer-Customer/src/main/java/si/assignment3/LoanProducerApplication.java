@@ -10,6 +10,5 @@ public class LoanProducerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(LoanProducerApplication.class, args);
-        ContractHandler.connectQueue();
     }
 }

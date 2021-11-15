@@ -42,6 +42,7 @@ public class ContractApplication {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         try {
+            // Create connection.
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
 

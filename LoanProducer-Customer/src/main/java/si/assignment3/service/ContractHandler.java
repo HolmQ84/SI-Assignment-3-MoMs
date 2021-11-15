@@ -13,11 +13,14 @@ import java.io.*;
 @Service
 public class ContractHandler {
     private static final Logger logger = LoggerFactory.getLogger(ContractHandler.class);
-    static byte[] aByte = new byte[1];
-    static int bytesRead;
+    byte[] aByte = new byte[1];
+    int bytesRead;
+    String fileStorageString = System.getProperty("user.dir")+"/LoanProducer-Customer/src/main/resources/static/contracts/Contract-";
+    String currentId;
 
-    public static void connectQueue()
+    public void connectQueue(int loanId)
     {
+        currentId = loanId + ".pdf";
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         try {
@@ -36,10 +39,7 @@ public class ContractHandler {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 FileOutputStream fos;
                 BufferedOutputStream bos;
-                LoanService ls = new LoanService();
-                System.out.println(ls.getLoanId());
-                String dir = System.getProperty("user.dir");
-                fos = new FileOutputStream(dir+"/LoanProducer-Customer/src/main/resources/static/contracts/Contract-"+ls.getLoanId()+".pdf");
+                fos = new FileOutputStream(fileStorageString+currentId);
                 bos = new BufferedOutputStream(fos);
                 bytesRead = is.read(aByte, 0, aByte.length);
                 do {

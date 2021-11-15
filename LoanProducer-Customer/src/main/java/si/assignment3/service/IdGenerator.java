@@ -1,8 +1,5 @@
 package si.assignment3.service;
 
-import javax.crypto.KeyGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Random;
 
 public class IdGenerator {

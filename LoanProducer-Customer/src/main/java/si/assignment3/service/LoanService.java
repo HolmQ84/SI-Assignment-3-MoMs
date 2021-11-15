@@ -48,7 +48,7 @@ public class LoanService {
     @KafkaListener(topics = "loan-offer", groupId = "my-group")
     public LoanOffer listen(String message) {
         LoanOffer loanOffer = new Gson().fromJson(message, LoanOffer.class);
-        logger.info("Received loan offer.");
+        logger.info("Received loan offer from bank.");
         offers.add(loanOffer);
         return loanOffer;
     }
@@ -59,7 +59,6 @@ public class LoanService {
 
     public void sendLoanAcceptance(int loanId) {
         this.loanId = loanId;
-        System.out.println("LoanID: " +loanId);
         try {
             JSONObject request = new JSONObject();
             request.put("loanId", loanId);
@@ -69,9 +68,5 @@ public class LoanService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public int getLoanId() {
-        return loanId;
     }
 }
