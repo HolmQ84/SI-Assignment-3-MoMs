@@ -48,7 +48,7 @@ public class LoanRequestHandler {
         logger.info("Loan acceptance received! " + message);
         LoanOffer loanOffer = getOfferById(Integer.parseInt(message.substring(10,18)));
         if (loanOffer != null) {
-            System.out.println("Loan found in DB!");
+            logger.info("Loan found in DB!");
             ConnectionFactory factory = new ConnectionFactory();
             factory.setHost("localhost");
             String queueName = "contract";
@@ -57,11 +57,12 @@ public class LoanRequestHandler {
                 Channel channel = connection.createChannel();
                 channel.queueDeclare(queueName, false, false, false, null);
                 channel.basicPublish("", queueName, null, loanOffer.toString().getBytes(StandardCharsets.UTF_8));
+                logger.info("Sent data to contract handler.");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("Loan not found in DB.");
+            logger.info("Loan not found in DB.");
         }
     }
 
